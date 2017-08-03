@@ -68,13 +68,12 @@
                 </div> -->
 
                     <div class="input-group">
-                        <input type="text" class="form-control" aria-label="...">
+                        <input id="user_input" type="text" class="form-control" aria-label="...">
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Course <span class="caret"></span></button>
-                            <ul class="dropdown-menu dropdown-menu">
-                                <li><a href="#">Course1</a></li>
-                                <li><a href="#">Course2</a></li>
-                                <li><a href="#">Course3</a></li>
+                            <ul id="course_menu" class="dropdown-menu dropdown-menu">
+
+
 
                             </ul>
                             <button name="searchBtn" id="mc-embedded-subscribe" class="btn btn-success">Select</button>
@@ -120,37 +119,29 @@
             }
         });
 
-        $('.combobox').combobox();
+        $.ajax({
+            url: "/getCourseId",
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+                for(var i = 0; i < data.length; i++) {
+                    var courseId = data[i].course_id;
+                    $("#course_menu").append('<li class="li_element"><a href="#">' + courseId + '</a></li>');
+                }
+            }
 
-        // bonus: add a placeholder
-        $('.combobox').attr('placeholder', 'For example, start typing "Pennsylvania"');
+        });
+
+        $(".li_element").click(function() {
+            var str = this.text();
+            alert(str);
+            $("#user_input").val(str);
+        });
+
 
     });
-    //#to-top button appears after scrolling
-    var fixed = false;
-    $(document).scroll(function() {
-        if ($(this).scrollTop() > 250) {
-            if (!fixed) {
-                fixed = true;
-                // $('#to-top').css({position:'fixed', display:'block'});
-                $('#to-top').show("slow", function() {
-                    $('#to-top').css({
-                        position: 'fixed',
-                        display: 'block'
-                    });
-                });
-            }
-        } else {
-            if (fixed) {
-                fixed = false;
-                $('#to-top').hide("slow", function() {
-                    $('#to-top').css({
-                        display: 'none'
-                    });
-                });
-            }
-        }
-    });
+
+
 
     </script>
 
