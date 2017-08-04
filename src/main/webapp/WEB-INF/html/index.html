@@ -131,27 +131,37 @@
             }
 
         });
-
+        var flag = true;
+        var course_id = "";
         $('#selectBtn').on('click', function() {
-            if($("#user_input").val() != "") {
-                $("#selectBtn").prop('disabled', true);
-            }
-            var course_id = $("#user_input").val().split(":")[1];
-            alert(course_id);
-            $.ajax({
-                url: "/searchByCourseId?course_id=" + course_id,
-                method: "POST",
-                data: JSON.stringify({"course_id": course_id}),
-                dataType: "json",
-                success: function(data) {
-                    console.log(data);
-                    $("#selectBtn").text("Download");
-                    setTimeout(function() {
-                        $("#selectBtn").prop('disabled', false);
-                    }, 1500);
+            if(flag) {
+                if($("#user_input").val() != "") {
+                    $("#selectBtn").prop('disabled', true);
                 }
-            });
+                course_id = $("#user_input").val().split(":")[1];
+                alert(course_id);
+                $.ajax({
+                    url: "/searchByCourseId?course_id=" + course_id,
+                    method: "POST",
+                    data: JSON.stringify({"course_id": course_id}),
+                    dataType: "json",
+                    success: function(data) {
+
+                        var location = window.location.href + "download?filename=" + course_id + ".csv";
+                        $("#selectBtn").html("<a href='" + location + "'>Download</a>");
+                        flag = false;
+                        setTimeout(function() {
+                            $("#selectBtn").prop('disabled', false);
+                        }, 1500);
+                    }
+                });
+           } else {
+                // if flag is false, which means this is the 'download' button
+
+           }
+
         });
+
 
 
 

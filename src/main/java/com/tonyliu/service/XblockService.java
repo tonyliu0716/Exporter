@@ -8,11 +8,11 @@ import com.tonyliu.entity.Course;
 import com.tonyliu.entity.Xblock;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,7 +150,7 @@ public class XblockService {
             ResultSet rs = ps.executeQuery();
 
 
-            String newCsv = courseId + ".csv";
+            String newCsv = "src/main/webapp/CSVFiles/" + courseId + ".csv";
 
 
             writer = new CSVWriter(new FileWriter(newCsv));
