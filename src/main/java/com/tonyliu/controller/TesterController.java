@@ -6,6 +6,7 @@ import com.tonyliu.service.XblockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -34,6 +35,21 @@ public class TesterController {
     @RequestMapping(value = "/getCourseId", method = RequestMethod.GET)
     public List<Course> getAllCourseId() {
         return service.getCourses();
+    }
+
+    @RequestMapping(value="/searchByCourseId", method = RequestMethod.POST)
+    public List<Xblock> getXblocksByCourseId (@RequestParam(value = "course_id") String course_id) {
+        String[] strings = course_id.split(" ");
+        String course_new_id = "";
+        for(int  i = 0; i < strings.length; i++) {
+            if(i != strings.length - 1) {
+                course_new_id += strings[i] + "+";
+            } else {
+                course_new_id += strings[i];
+            }
+        }
+        System.out.println("couse_id: " + course_new_id);
+        return service.getXblocksByCourseId(course_new_id);
     }
 
 }

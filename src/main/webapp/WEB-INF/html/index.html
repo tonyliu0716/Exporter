@@ -76,7 +76,7 @@
 
 
                             </ul>
-                            <button name="searchBtn" id="mc-embedded-subscribe" class="btn btn-success">Select</button>
+                            <button name="selectBtn" id="selectBtn" class="btn btn-success">Select</button>
                         </div><!-- /btn-group -->
                     </div><!-- /input-group -->
 
@@ -126,21 +126,41 @@
             success: function(data) {
                 for(var i = 0; i < data.length; i++) {
                     var courseId = data[i].course_id;
-                    $("#course_menu").append('<li class="li_element"><a href="#">' + courseId + '</a></li>');
+                    $("#course_menu").append('<li><a onclick="getValue(this.innerHTML)">' + courseId + '</a></li>');
                 }
             }
 
         });
 
-        $(".li_element").click(function() {
-            var str = this.text();
-            alert(str);
-            $("#user_input").val(str);
+        $('#selectBtn').on('click', function() {
+            if($("#user_input").val() != "") {
+                $("#selectBtn").prop('disabled', true);
+            }
+            var course_id = $("#user_input").val().split(":")[1];
+            alert(course_id);
+            $.ajax({
+                url: "/searchByCourseId?course_id=" + course_id,
+                method: "POST",
+                data: JSON.stringify({"course_id": course_id}),
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                    $("#selectBtn").text("Download");
+                    setTimeout(function() {
+                        $("#selectBtn").prop('disabled', false);
+                    }, 1500);
+                }
+            });
         });
+
+
 
 
     });
 
+    function getValue(str) {
+        $("#user_input").val(str);
+    }
 
 
     </script>
